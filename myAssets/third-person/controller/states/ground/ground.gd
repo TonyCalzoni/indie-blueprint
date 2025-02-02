@@ -39,18 +39,31 @@ func physics_update(delta):
 		FSM.change_state_to(Fall)
 
 
-func apply_gravity(force: float = gravity_force, delta: float = get_physics_process_delta_time()):
-	actor.velocity += VectorHelper.up_direction_opposite_vector3(actor.up_direction) * force * delta
-
-
 func accelerate(delta: float = get_physics_process_delta_time()) -> void:
 	var direction = actor.motion_input.world_coordinate_space_direction
 	current_speed = get_speed()
+	
+	if actor.view_mode == ThirdPersonCameraController.perspectives.THIRD_PERSON:
+		
+		## Need to rotate actor to face movement direction if third person
+		var new_rot = ((((actor.motion_input.input_direction*Vector2(1,-1))).rotated(PI*1.5).angle())+actor.camera_controller.rotation.y)
+		actor.rotation.y = new_rot
+		
+		## Move relative to camera
+		var camera_relative_movement = Vector3(0,0,actor.motion_input.input_direction.length()).rotated(Vector3.UP,actor.rotation.y + PI)
+		
+		direction = camera_relative_movement
+	
 	
 	if acceleration > 0:
 		actor.velocity = lerp(actor.velocity, direction * current_speed, clamp(acceleration * delta, 0, 1.0))
 	else:
 		actor.velocity = direction * current_speed
+
+
+#region Original
+func apply_gravity(force: float = gravity_force, delta: float = get_physics_process_delta_time()):
+	actor.velocity += VectorHelper.up_direction_opposite_vector3(actor.up_direction) * force * delta
 
 
 func decelerate(delta: float = get_physics_process_delta_time()) -> void:
@@ -194,4 +207,5 @@ func detect_crawl() -> void:
 func detect_jump() -> void:
 	if actor.jump and InputMap.has_action(jump_input_action) and Input.is_action_just_pressed(jump_input_action):
 		FSM.change_state_to(Jump)
+#endregion
 #endregion

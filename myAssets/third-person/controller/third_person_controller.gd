@@ -6,10 +6,16 @@ const GroupName: StringName = &"player"
 #region Third Person additional variables, enums, and signals
 
 # Empty
-
+# TODO
+# Motion relative to camera
+# Turn 3P actor in accordance with given movement
+@export var view_mode: ThirdPersonCameraController.perspectives = ThirdPersonCameraController.perspectives.THIRD_PERSON
+@export var camera: CameraShake3D
+@export var camera_controller: ThirdPersonCameraController
 #endregion
 
 
+# Had to move vars for Camera and Camera Controller
 #region original First Person variables ( Try not to touch these )
 @export var mouse_mode_switch_input_actions: Array[String] = ["ui_cancel"]
 @export_group("Camera FOV")
@@ -43,8 +49,6 @@ const GroupName: StringName = &"player"
 @export var ladder_climb: bool = false
 @onready var debug_ui: CanvasLayer = $DebugUI
 @onready var finite_state_machine: FiniteStateMachine = $FiniteStateMachine
-@onready var camera: CameraShake3D = $CameraController/Head/CameraShake3D
-@onready var camera_controller: ThirdPersonCameraController = $CameraController
 
 @onready var submerged_effect: ColorRect = $PostProcessingEffects/Submerged
 
@@ -84,6 +88,7 @@ var last_direction: Vector3 = Vector3.ZERO
 #endregion
 
 
+#region Core
 func _unhandled_key_input(_event: InputEvent) -> void:
 	# Original
 	if InputHelper.is_any_action_just_pressed(mouse_mode_switch_input_actions):
@@ -121,13 +126,13 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	motion_input.update()
-	
 	was_grounded = is_grounded
 	is_grounded = is_on_floor()
-	
 	_update_camera_fov(finite_state_machine.current_state, delta)
+#endregion
 
 
+#region Original First Person functions ( Try not to touch these )
 func is_aiming() -> bool:
 	return false#fire_arm_weapon_holder.firearm_weapon_placement.current_aim_state == FireArmWeapon.AimStates.Aim
 	
@@ -254,3 +259,4 @@ func on_state_changed(_from: MachineState, to: MachineState) -> void:
 	#unlock_movement()
 	#camera.make_current()
 	#InputHelper.capture_mouse()
+#endregion
