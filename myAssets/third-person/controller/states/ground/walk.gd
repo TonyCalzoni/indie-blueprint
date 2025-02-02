@@ -1,4 +1,4 @@
-class_name Walk3P extends GroundState3P
+class_name WalkThirdPerson extends GroundStateThirdPerson
 
 @export var catching_breath_recovery_time: float = 3.0
 

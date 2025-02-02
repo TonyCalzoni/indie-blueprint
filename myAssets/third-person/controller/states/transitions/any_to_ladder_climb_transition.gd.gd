@@ -1,4 +1,4 @@
-class_name AnyToLadderClimbTransition3P extends MachineTransition
+class_name AnyToLadderClimbTransitionThirdPerson extends MachineTransition
 
 
 func should_transition() -> bool:

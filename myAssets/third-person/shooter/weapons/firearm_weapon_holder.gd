@@ -1,5 +1,5 @@
 @icon("res://components/motion/3D/first-person/shooter/weapons/weapon_holder.svg")
-class_name FireArmWeaponHolder3P extends Node3D
+class_name FireArmWeaponHolderThirdPerson extends Node3D
 
 signal dropped_weapon(weapon: FireArmWeaponMesh)
 signal changed_weapon(from: WeaponDatabase.WeaponRecord, to: WeaponDatabase.WeaponRecord)
@@ -7,7 +7,7 @@ signal stored_weapon(weapon: WeaponDatabase.WeaponRecord)
 signal drawed_weapon(weapon: WeaponDatabase.WeaponRecord)
 
 @export var actor: ThirdPersonController
-@export var camera_controller: ThirdPersonCameraController
+@export var camera_controller: Node3D
 ## This is a node that holds a Camera3D and where the weapon recoil will be applied to simulate the kick on each shoot that affects accuracy. 
 @export var camera_recoil_node: Node3D
 ## Slots to hold weapons on the format Dictionary[InputAction, WeaponId] where input action is the key that

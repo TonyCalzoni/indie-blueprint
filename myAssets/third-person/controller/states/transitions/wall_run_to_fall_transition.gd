@@ -1,4 +1,4 @@
-class_name WallRunToFallTransition3P extends MachineTransition
+class_name WallRunToFallTransitionThirdPerson extends MachineTransition
 
 
 

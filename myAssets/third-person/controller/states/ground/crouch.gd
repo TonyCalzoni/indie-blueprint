@@ -1,4 +1,4 @@
-class_name Crouch3P extends GroundState3P
+class_name CrouchThirdPerson extends GroundStateThirdPerson
 
 
 func enter():

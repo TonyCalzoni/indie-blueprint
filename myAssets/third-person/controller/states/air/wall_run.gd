@@ -1,4 +1,4 @@
-class_name WallRun3P extends AirState3P
+class_name WallRunThirdPerson extends AirStateThirdPerson
 
 @export_category("Camera")
 @export_range(0, 360.0, 0.01) var camera_tilt_angle: float = 5.0

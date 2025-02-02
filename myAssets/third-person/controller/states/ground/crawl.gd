@@ -1,4 +1,4 @@
-class_name Crawl3P extends GroundState3P
+class_name CrawlThirdPerson extends GroundStateThirdPerson
 
 
 func enter():

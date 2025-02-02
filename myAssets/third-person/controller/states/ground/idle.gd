@@ -1,4 +1,4 @@
-class_name Idle3P extends GroundState3P
+class_name IdleThirdPerson extends GroundStateThirdPerson
 
 
 func physics_update(delta):

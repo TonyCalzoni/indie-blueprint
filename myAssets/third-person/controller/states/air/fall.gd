@@ -1,4 +1,4 @@
-class_name Fall3P extends AirState3P
+class_name FallThirdPerson extends AirStateThirdPerson
 
 @export var edge_gap_auto_jump: float = 0.45
 @export var coyote_time: bool = true

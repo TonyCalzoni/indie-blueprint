@@ -1,4 +1,4 @@
-class_name WallRunToWallJumpTransition3P extends MachineTransition
+class_name WallRunToWallJumpTransitionThirdPerson extends MachineTransition
 
 
 func on_transition() -> void:

@@ -1,4 +1,4 @@
-class_name WallJump3P extends AirState3P
+class_name WallJumpThirdPerson extends AirStateThirdPerson
 
 @export var keep_momentum: bool = true
 @export var wall_jump_horizontal_force: float = 5.0

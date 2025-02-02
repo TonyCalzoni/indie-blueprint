@@ -1,4 +1,4 @@
-class_name AnyToWallRunTransition3P extends MachineTransition
+class_name AnyToWallRunTransitionThirdPerson extends MachineTransition
 
 
 func should_transition() -> bool:

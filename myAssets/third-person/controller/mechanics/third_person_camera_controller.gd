@@ -3,23 +3,12 @@ class_name ThirdPersonCameraController extends Node3D
 
 
 #region Third Person Camera Controller additions
-enum camera_shift { NONE, RIGHT, LEFT }
-enum perspectives { FIRST_PERSON, THIRD_PERSON }
-
 @export_group("Third Person Settings")
-@export var third_person_actor: Node3D
+@export var actor_root: ThirdPersonActorBase
 @export var head: SpringArm3D
-# Back distance
-@export_range(0.5, 2.0) var third_person_camera_distance: float = 1
-# Offsets for things like aiming, crouching, and crawling
-@export_range(0.0, 0.5) var camera_h_offset: float
-@export_range(0.0, 1.0) var camera_v_offset: float
-
 # For when switching to First Person Perspective
 var init_head_bob_was_enabled: bool
 var init_head_swing_was_enabled: bool
-
-signal character_perspective_changed(new_perspective)
 #endregion
 
 #region Original Camera Controller 3D items
@@ -83,19 +72,20 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and InputHelper.is_mouse_captured():
 		var motion: InputEventMouseMotion = event.xformed_by(root_node.get_final_transform())
 		last_mouse_input += motion.relative
-		
+	if InputHelper.action_just_pressed_and_exists("switch_perspective"):
+		actor_root.switch_perspective()
+
 
 func _ready() -> void:
 	assert(actor is Node3D, "CameraController: the Node3D actor is not set, this camera controller needs a reference to apply the camera movement")
 	assert(head is SpringArm3D, "ThirdPersonCameraController: the SpringArm3D (Head) object is not set")
 	init_head_bob_was_enabled = swing_head_enabled
 	init_head_swing_was_enabled = bob_enabled
-	head.spring_length = third_person_camera_distance
-	if actor.view_mode == perspectives.FIRST_PERSON:
-		switch_perspective() # Handling for non-default view mode setting
+	head.spring_length = actor_root.third_person_camera_distance
+	if actor_root.view_mode == ThirdPersonActorBase.perspectives.FIRST_PERSON:
+		actor_root.switch_perspective() # Handling for non-default view mode setting
 	current_horizontal_limit = camera_horizontal_limit
 	current_vertical_limit = camera_vertical_limit
-	original_camera_rotation = camera.rotation
 	
 	if bob_head != null:
 		original_head_bob_position = bob_head.position
@@ -106,17 +96,16 @@ func _ready() -> void:
 	
 
 func _physics_process(delta: float) -> void:
-	if actor.view_mode == perspectives.FIRST_PERSON:
+	if actor_root.view_mode == ThirdPersonActorBase.perspectives.FIRST_PERSON:
 		swing_head(delta)
 		headbob(delta)
-		rotate_camera(last_mouse_input)
-	elif actor.view_mode == perspectives.THIRD_PERSON:
+		rotate_camera_1p(last_mouse_input)
+	elif actor_root.view_mode == ThirdPersonActorBase.perspectives.THIRD_PERSON:
 		rotate_camera_3p(last_mouse_input)
-	
+		
 	# Make camera follow player
 	var goto = actor.position+Vector3(0,1.75,0)
 	position = position + ((goto-position)*delta*5)
-#endregion
 
 #region Third Person functions
 func rotate_camera_3p(motion: Vector2) -> void:
@@ -143,33 +132,10 @@ func rotate_camera_3p(motion: Vector2) -> void:
 	
 	last_mouse_input = Vector2.ZERO
 
-func switch_perspective():
-	if actor.view_mode == perspectives.FIRST_PERSON:
-		head.spring_length = third_person_camera_distance
-		third_person_actor.visible = true
-		swing_head_enabled = false
-		bob_enabled = false
-		actor.view_mode = perspectives.THIRD_PERSON
-		#print_debug("Third Person enabled")
-	
-	elif actor.view_mode == perspectives.THIRD_PERSON:
-		head.spring_length = 0.0
-		make_actor_face_camera_direction()
-		third_person_actor.visible = false
-		swing_head_enabled = init_head_swing_was_enabled
-		bob_enabled = init_head_bob_was_enabled
-		actor.view_mode = perspectives.FIRST_PERSON
-		#print_debug("First Person enabled")
-	
-	character_perspective_changed.emit(actor.view_mode)
-	
-func make_actor_face_camera_direction():
-		# Make actor face camera direction
-		actor.global_rotation_degrees.y = global_rotation_degrees.y
 #endregion
 
 #region modified Camera Controller components
-func rotate_camera(motion: Vector2) -> void:
+func rotate_camera_1p(motion: Vector2) -> void:
 	if motion.is_zero_approx():
 		return
 
@@ -179,17 +145,17 @@ func rotate_camera(motion: Vector2) -> void:
 	var pitch_input: float = motion.y * mouse_sens ## Cabeceo
 	
 	
-	actor.rotate_y(-twist_input)
+	actor_root.rotate_y(-twist_input) # rotate root instead of just the actor
 	rotate_y(-twist_input) # We have to rotate both the camera and the actor now
 	
 	rotate_x(-pitch_input)
 	rotation.z = 0 # Axis lock to prevent unwanted roll
 	
-	actor.rotation_degrees.y = limit_horizontal_rotation(actor.rotation_degrees.y)
+	actor_root.rotation_degrees.y = limit_horizontal_rotation(actor_root.rotation_degrees.y)
 	rotation_degrees.y = limit_horizontal_rotation(rotation_degrees.y) # To maintain functionality down the line
 	rotation_degrees.x = limit_vertical_rotation(rotation_degrees.x)
 	
-	actor.orthonormalize()
+	actor_root.orthonormalize()
 	orthonormalize()
 	
 	last_mouse_input = Vector2.ZERO

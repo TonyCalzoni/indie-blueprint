@@ -4,18 +4,14 @@ class_name ThirdPersonController extends CharacterBody3D
 const GroupName: StringName = &"player"
 
 #region Third Person additional variables, enums, and signals
-
-# Empty
-# TODO
-# Motion relative to camera
-# Turn 3P actor in accordance with given movement
-@export var view_mode: ThirdPersonCameraController.perspectives = ThirdPersonCameraController.perspectives.THIRD_PERSON
+@export_group("Third Person Settings")
+@export var actor_root: ThirdPersonActorBase
 @export var camera: CameraShake3D
 @export var camera_controller: ThirdPersonCameraController
+@export var fire_arm_weapon_holder: FireArmWeaponHolderThirdPerson
 #endregion
 
 
-# Had to move vars for Camera and Camera Controller
 #region original First Person variables ( Try not to touch these )
 @export var mouse_mode_switch_input_actions: Array[String] = ["ui_cancel"]
 @export_group("Camera FOV")
@@ -72,7 +68,6 @@ const GroupName: StringName = &"player"
 @onready var crawl_collision_shape: CollisionShape3D = $CrawlCollisionShape
 
 @onready var original_camera_fov = camera.fov
-#@onready var fire_arm_weapon_holder: FireArmWeaponHolder = $CameraController/Head/CameraShake3D/FireArmWeaponHolder
 
 
 var was_grounded: bool = false
@@ -89,15 +84,6 @@ var last_direction: Vector3 = Vector3.ZERO
 
 
 #region Core
-func _unhandled_key_input(_event: InputEvent) -> void:
-	# Original
-	if InputHelper.is_any_action_just_pressed(mouse_mode_switch_input_actions):
-		switch_mouse_capture_mode()
-	# Addition
-	if InputHelper.action_just_pressed_and_exists("switch_perspective"):
-		camera_controller.switch_perspective()
-
-
 func _enter_tree() -> void:
 	add_to_group(GroupName)
 	
@@ -109,16 +95,16 @@ func _ready() -> void:
 	debug_ui.visible = OS.is_debug_build()
 	submerged_effect.visible = is_underwater
 
-	motion_input = TransformedInput.new(self)
+	motion_input = TransformedInput.new(actor_root)
 	InputHelper.capture_mouse()
 	
 	finite_state_machine.register_transitions([
-		WalkToRunTransition.new(),
-		RunToWalkTransition.new(),
-		AnyToWallRunTransition.new(),
-		WallRunToFallTransition.new(),
-		WallRunToWallJumpTransition.new(),
-		AnyToLadderClimbTransition.new()
+		WalkToRunTransitionThirdPerson.new(),
+		RunToWalkTransitionThirdPerson.new(),
+		AnyToWallRunTransitionThirdPerson.new(),
+		WallRunToFallTransitionThirdPerson.new(),
+		WallRunToWallJumpTransitionThirdPerson.new(),
+		AnyToLadderClimbTransitionThirdPerson.new()
 	])
 	
 	finite_state_machine.state_changed.connect(on_state_changed)
@@ -129,12 +115,18 @@ func _physics_process(delta: float) -> void:
 	was_grounded = is_grounded
 	is_grounded = is_on_floor()
 	_update_camera_fov(finite_state_machine.current_state, delta)
+
+
+func _unhandled_key_input(_event: InputEvent) -> void:
+	if InputHelper.is_any_action_just_pressed(mouse_mode_switch_input_actions):
+		switch_mouse_capture_mode()
+
 #endregion
 
 
 #region Original First Person functions ( Try not to touch these )
 func is_aiming() -> bool:
-	return false#fire_arm_weapon_holder.firearm_weapon_placement.current_aim_state == FireArmWeapon.AimStates.Aim
+	return fire_arm_weapon_holder.firearm_weapon_placement.current_aim_state == FireArmWeapon.AimStates.Aim
 	
 	
 func is_falling() -> bool:

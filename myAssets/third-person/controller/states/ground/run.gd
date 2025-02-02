@@ -1,4 +1,4 @@
-class_name Run3P extends GroundState3P
+class_name RunThirdPerson extends GroundStateThirdPerson
 
 @export var sprint_time: float = 3.5
 

@@ -1,6 +1,7 @@
-class_name GroundState3P extends MachineState
+class_name GroundStateThirdPerson extends MachineState
 
-@export var actor: ThirdPersonController
+@export var actor: Node3D
+@export var actor_root: ThirdPersonActorBase
 @export_group("Parameters")
 @export var gravity_force: float = 9.8
 @export var speed: float = 3.0
@@ -43,17 +44,12 @@ func accelerate(delta: float = get_physics_process_delta_time()) -> void:
 	var direction = actor.motion_input.world_coordinate_space_direction
 	current_speed = get_speed()
 	
-	if actor.view_mode == ThirdPersonCameraController.perspectives.THIRD_PERSON:
-		
-		## Need to rotate actor to face movement direction if third person
-		var new_rot = ((((actor.motion_input.input_direction*Vector2(1,-1))).rotated(PI*1.5).angle())+actor.camera_controller.rotation.y)
-		actor.rotation.y = new_rot
-		
-		## Move relative to camera
-		var camera_relative_movement = Vector3(0,0,actor.motion_input.input_direction.length()).rotated(Vector3.UP,actor.rotation.y + PI)
-		
-		direction = camera_relative_movement
-	
+	## Need to rotate actor to face movement direction if third person
+	var new_rot = ((((actor.motion_input.input_direction*Vector2(1,-1))).rotated(PI*1.5).angle())+actor.camera_controller.rotation.y)
+	actor.rotation.y = new_rot
+	## Move relative to camera
+	var camera_relative_movement = Vector3(0,0,actor.motion_input.input_direction.length()).rotated(Vector3.UP,actor.rotation.y + PI)
+	direction = camera_relative_movement
 	
 	if acceleration > 0:
 		actor.velocity = lerp(actor.velocity, direction * current_speed, clamp(acceleration * delta, 0, 1.0))

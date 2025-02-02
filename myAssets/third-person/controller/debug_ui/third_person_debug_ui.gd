@@ -1,6 +1,7 @@
 extends CanvasLayer
 
-@export var actor: ThirdPersonController
+@export var actor: Node3D
+@export var actor_root: Node3D
 @export var finite_state_machine: FiniteStateMachine
 @export var speed_unit: VelocityHelper.SpeedUnit = VelocityHelper.SpeedUnit.KilometersPerHour
 
@@ -8,13 +9,15 @@ extends CanvasLayer
 @onready var speed_label: Label = %SpeedLabel
 @onready var state_label: Label = %State
 @onready var fov_label: Label = %FOV
+@onready var player_position_label: Label = %PlayerPosition
+#@onready var container_position_label: Label = %ContainerPosition
 
 
 @onready var control: Control = $Control
 
 
 func _ready() -> void:
-	assert(actor is ThirdPersonController, "ThirdPersonControllerDebugUI: Needs a ThirdPersonController to display the debug parameters")
+	#assert(actor is ThirdPersonController, "ThirdPersonControllerDebugUI: Needs a ThirdPersonController to display the debug parameters")
 	
 	control.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
@@ -46,6 +49,9 @@ func _process(_delta: float) -> void:
 		
 	if actor.camera:
 		fov_label.text = str(actor.camera.fov)
+		
+	player_position_label.text = "Player Position: (%s, %s, %s)" % [actor.position.x, actor.position.y, actor.position.z]
+	#container_position_label.text = "Container Position: (%s, %s, %s)" % [actor_root.position.x, actor_root.position.y, actor_root.position.z]
 
 
 func on_state_changed(from: MachineState, to: MachineState) -> void:

@@ -1,4 +1,4 @@
-class_name WalkToRunTransition3P extends MachineTransition
+class_name WalkToRunTransitionThirdPerson extends MachineTransition
 
 
 func should_transition() -> bool:

@@ -1,4 +1,4 @@
-class_name Slide3P extends GroundState3P
+class_name SlideThirdPerson extends GroundStateThirdPerson
 
 enum SlideSide {
 	Right,

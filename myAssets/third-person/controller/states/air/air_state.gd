@@ -1,7 +1,8 @@
-class_name AirState3P extends MachineState
+class_name AirStateThirdPerson extends MachineState
 
 
-@export var actor: ThirdPersonController
+@export var actor: Node3D
+@export var actor_root: ThirdPersonActorBase
 @export_group("Parameters")
 @export var gravity_force: float = 9.8
 @export var air_speed: float = 3.0

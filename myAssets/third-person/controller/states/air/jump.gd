@@ -1,4 +1,4 @@
-class_name Jump3P extends AirState3P
+class_name JumpThirdPerson extends AirStateThirdPerson
 
 @export var jump_times: int = 1
 @export var height_reduced_by_jump = 0.2

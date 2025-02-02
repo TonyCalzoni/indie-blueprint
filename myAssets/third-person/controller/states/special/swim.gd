@@ -1,4 +1,4 @@
-class_name Swim3P extends SpecialState3P
+class_name SwimThirdPerson extends SpecialStateThirdPerson
 
 
 @export var speed_reduction_on_water_entrance: float = 2.0

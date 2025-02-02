@@ -1,4 +1,4 @@
-class_name LadderClimb3P extends SpecialState3P
+class_name LadderClimbThirdPerson extends SpecialStateThirdPerson
 
 ## When automatic ladder detection is enabled, we give a cooldown time to not get stuck 
 ## on the ladder when released
