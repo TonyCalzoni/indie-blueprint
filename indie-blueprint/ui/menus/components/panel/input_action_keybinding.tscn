@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://indie-blueprint/ui/menus/components/panel/input_action_keybinding.gd" id="1_6njha"]
 
 [node name="InputActionKeybinding" type="HBoxContainer"]
-offset_right = 150.0
+offset_right = 404.0
 offset_bottom = 35.0
 script = ExtResource("1_6njha")
 
@@ -27,3 +27,14 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 4
 text = "INPUT KEY"
+
+[node name="Spacer2" type="Control" parent="."]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeleteKeybindButton" type="Button" parent="."]
+layout_mode = 2
+text = "DELETE_BIND"
+
+[connection signal="pressed" from="DeleteKeybindButton" to="." method="_on_delete_keybind_button_pressed"]

@@ -1,8 +1,8 @@
 class_name InputActionKeybindingDisplay extends HBoxContainer
 
+
 @onready var input_key_label: Label = $InputKeyPanel/MarginContainer/InputKeyLabel
 @onready var input_key_panel: Panel = $InputKeyPanel
-
 
 var action: StringName = &""
 var keybinding: InputEvent = null
@@ -40,3 +40,13 @@ func update_keybinding(new_event: InputEvent) -> void:
 
 func change_to_remapping_text() -> void:
 	input_key_label.text = "Waiting for input..."
+
+
+func _on_delete_keybind_button_pressed() -> void:
+	InputMap.action_erase_event(action, keybinding)
+	
+	# Remove item from settings manager
+	SettingsManager.create_keybinding_events_for_action(action)
+	
+	queue_free()
+	

@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhob7bap6pdyp"]
+
+[ext_resource type="Script" path="res://indie-blueprint/ui/menus/components/panel/input_action_group.gd" id="1_127du"]
+
+[node name="InputActionGroup" type="VBoxContainer"]
+offset_right = 404.0
+offset_bottom = 35.0
+script = ExtResource("1_127du")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="InputActionGroupLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "ACTION NAME"
+
+[node name="Spacer" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(555, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AddKeybindButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+action_mode = 0
+text = "ADD_BIND"
+
+[connection signal="toggled" from="HBoxContainer/AddKeybindButton" to="." method="_on_add_keybind_button_toggled"]
