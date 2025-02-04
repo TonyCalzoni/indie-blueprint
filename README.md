@@ -1,7 +1,8 @@
 More progress <br> 
  <br> 
+ State Machine still kinda borked <br>
+  <br>
 TODONE: <br> 
--Unborked State Machine <br> 
 -Rotate 3P actor relative to camera <br> 
 -Move 3P actor relative to camera <br> 
  <br> 
