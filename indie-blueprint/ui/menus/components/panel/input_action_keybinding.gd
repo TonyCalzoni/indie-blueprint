@@ -1,6 +1,5 @@
 class_name InputActionKeybindingDisplay extends HBoxContainer
 
-@onready var action_label: Label = $ActionLabel
 @onready var input_key_label: Label = $InputKeyPanel/MarginContainer/InputKeyLabel
 @onready var input_key_panel: Panel = $InputKeyPanel
 
@@ -26,7 +25,6 @@ func setup(_action: StringName, _keybinding: InputEvent) -> void:
 
 func display_keybindings() -> void:
 	if not action.is_empty() and keybinding:
-		action_label.text = tr(action.to_upper())
 		input_key_label.text = keybinding.as_text().replace("(Physical)", "").strip_edges()
 
 

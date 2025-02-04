@@ -70,6 +70,7 @@ static var DefaultSettings: Dictionary = {
 	GameSettings.SubtitlesLanguageSetting: TranslationServer.get_locale(),
 	GameSettings.SubtitlesEnabledSetting: false,
 	GameSettings.AllowTelemetrySetting: false,
+	
 	## Dictionary[StringName, Array[InputEvent]
 	GameSettings.DefaultInputMapActionsSetting: {}
 }

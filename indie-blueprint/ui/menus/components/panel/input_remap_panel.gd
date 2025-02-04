@@ -2,6 +2,7 @@ extends PanelContainer
 
 const InputActionKeybindingScene = preload("res://indie-blueprint/ui/menus/components/panel/input_action_keybinding.tscn")
 
+
 @export var include_ui_actions: bool = false
 @export var exclude_actions: Array[String] = []
 @onready var action_list: VBoxContainer = %ActionListVboxContainer
@@ -52,12 +53,18 @@ func _ready() -> void:
 func load_input_keybindings(target_actions: Array[StringName]) -> void:
 	for action: StringName in target_actions:
 		var actions: Array[InputEvent] = InputMap.action_get_events(action)
-			
+		
 		if actions.size() > 0:
-			var input_action_keybinding: InputActionKeybindingDisplay = InputActionKeybindingScene.instantiate() as InputActionKeybindingDisplay
-			action_list.add_child(input_action_keybinding)
-			input_action_keybinding.setup(action, actions.front())
-			input_action_keybinding.input_key_panel.gui_input.connect(on_input_keybinding_pressed.bind(input_action_keybinding))
+			# Add group label
+			var action_label = Label.new()
+			action_label.text = tr(action.to_upper())
+			action_list.add_child(action_label)
+			
+			for i in actions:
+				var input_action_keybinding: InputActionKeybindingDisplay = InputActionKeybindingScene.instantiate() as InputActionKeybindingDisplay
+				action_list.add_child(input_action_keybinding)
+				input_action_keybinding.setup(action, i)
+				input_action_keybinding.input_key_panel.gui_input.connect(on_input_keybinding_pressed.bind(input_action_keybinding))
 	
 	## Move the reset to default button to the end of the list
 	action_list.move_child(reset_to_default_button, action_list.get_child_count() - 1)
