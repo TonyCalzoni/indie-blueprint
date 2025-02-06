@@ -11,7 +11,14 @@ func ready() -> void:
 	
 func enter():
 	actor.velocity.y = 0
+	# TODO
+	#%ThirdPersonAnimationTree.set("parameters/Walk/blend_amount", 1.0)
 
+
+func exit(_next_state):
+	# TODO
+	#%ThirdPersonAnimationTree.set("parameters/Walk/blend_amount", 0.0)
+	pass
 
 func physics_update(delta):
 	super.physics_update(delta)

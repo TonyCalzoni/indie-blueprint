@@ -61,6 +61,9 @@ func ready():
 	
 	
 func enter():
+	%ThirdPersonAnimationTree.set("parameters/Air/blend_amount", 1.0)
+	#TODO/TOFIX
+	#%ThirdPersonAnimationTree.set("parameters/JumpStart/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 	apply_jump()
 	actor.move_and_slide()
 
@@ -70,6 +73,7 @@ func exit(_next_state: MachineState):
 	jump_horizontal_boost = 0
 	jump_vertical_boost = 0
 	last_jumped_position = Vector3.ZERO
+	%ThirdPersonAnimationTree.set("parameters/Air/blend_amount", 0.0)
 	
 
 func physics_update(delta: float):
