@@ -26,7 +26,7 @@ func enter():
 	current_coyote_time_frames = coyote_time_frames
 	current_jump_input_buffer_time_frames = jump_input_buffer_time_frames
 	
-	if FSM.last_state() is GroundState:
+	if FSM.last_state() is GroundStateThirdPerson:
 		FSM.last_state().stair_stepping = false
 	
 	wall_run_start_cooldown_timer.start()
@@ -43,16 +43,16 @@ func physics_update(delta: float):
 	current_jump_input_buffer_time_frames -= 1
 	
 	if jump_requested and _coyote_time_is_active():
-		FSM.change_state_to(Jump)
+		FSM.change_state_to(JumpThirdPerson)
 		
 	elif (not actor.was_grounded and actor.is_grounded) or actor.is_on_floor():
 		if jump_requested and _jump_input_buffer_is_active():
-			FSM.change_state_to(Jump)
+			FSM.change_state_to(JumpThirdPerson)
 		else:
 			if actor.motion_input.input_direction.is_zero_approx():
-				FSM.change_state_to(Idle)
+				FSM.change_state_to(IdleThirdPerson)
 			else:
-				FSM.change_state_to(Walk)
+				FSM.change_state_to(WalkThirdPerson)
 			
 	detect_swim()
 	detect_wall_jump()
@@ -63,7 +63,7 @@ func physics_update(delta: float):
 
 #region Detectors
 func _coyote_time_is_active() -> bool:
-	return coyote_time and current_coyote_time_frames > 0 and FSM.last_state() is GroundState
+	return coyote_time and current_coyote_time_frames > 0 and FSM.last_state() is GroundStateThirdPerson
 
 func _jump_input_buffer_is_active() -> bool:
 	return jump_input_buffer and current_jump_input_buffer_time_frames > 0

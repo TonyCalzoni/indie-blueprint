@@ -2,7 +2,6 @@ class_name AirStateThirdPerson extends MachineState
 
 
 @export var actor: Node3D
-@export var actor_root: ThirdPersonActorBase
 @export_group("Parameters")
 @export var gravity_force: float = 9.8
 @export var air_speed: float = 3.0
@@ -39,7 +38,7 @@ func air_move(delta: float = get_physics_process_delta_time()) -> void:
 
 
 func accelerate(delta: float = get_physics_process_delta_time()) -> void:
-	var direction = actor.motion_input.world_coordinate_space_direction
+	var direction = Vector3(0,0,actor.motion_input.input_direction.length()).rotated(Vector3.UP,actor.rotation.y + PI)
 	
 	current_air_speed = get_speed()
 	
@@ -68,25 +67,25 @@ func get_speed() -> float:
 
 func detect_jump() -> void:
 	if actor.jump and InputMap.has_action(jump_input_action) and Input.is_action_just_pressed(jump_input_action):
-		FSM.change_state_to(Jump)
+		FSM.change_state_to(JumpThirdPerson)
 
 
 func detect_wall_jump() -> void:
 	if wall_run_start_cooldown_timer.is_stopped() and actor.wall_detected() and InputMap.has_action(jump_input_action) and Input.is_action_just_pressed(jump_input_action):
-		FSM.change_state_to(WallJump)
+		FSM.change_state_to(WallJumpThirdPerson)
 
 
 func detect_wall_run() -> void:
 	if actor.wall_detected():
-		FSM.change_state_to(WallRun)
+		FSM.change_state_to(WallRunThirdPerson)
 
 
 func detect_swim() -> void:
 	if FSM.states.has("Swim") and actor.swim:
-		var swim_state: Swim = FSM.states["Swim"] as Swim
+		var swim_state: SwimThirdPerson = FSM.states["Swim"] as SwimThirdPerson
 		
 		if swim_state.eyes.global_position.y <= swim_state.water_height:
-			FSM.change_state_to(Swim)
+			FSM.change_state_to(SwimThirdPerson)
 
 
 func limit_fall_velocity() -> void:

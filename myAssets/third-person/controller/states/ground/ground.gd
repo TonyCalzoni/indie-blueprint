@@ -1,7 +1,6 @@
 class_name GroundStateThirdPerson extends MachineState
 
 @export var actor: Node3D
-@export var actor_root: ThirdPersonActorBase
 @export_group("Parameters")
 @export var gravity_force: float = 9.8
 @export var speed: float = 3.0
@@ -37,19 +36,18 @@ func physics_update(delta):
 		apply_gravity(gravity_force, delta)
 
 	if actor.is_falling() and not stair_stepping:
-		FSM.change_state_to(Fall)
+		FSM.change_state_to(FallThirdPerson)
 
 
 func accelerate(delta: float = get_physics_process_delta_time()) -> void:
-	var direction = actor.motion_input.world_coordinate_space_direction
+	# Relative movement
+	var direction = Vector3(0,0,actor.motion_input.input_direction.length()).rotated(Vector3.UP,actor.rotation.y + PI)
 	current_speed = get_speed()
 	
-	## Need to rotate actor to face movement direction if third person
-	var new_rot = ((((actor.motion_input.input_direction*Vector2(1,-1))).rotated(PI*1.5).angle())+actor.camera_controller.rotation.y)
-	actor.rotation.y = new_rot
-	## Move relative to camera
-	var camera_relative_movement = Vector3(0,0,actor.motion_input.input_direction.length()).rotated(Vector3.UP,actor.rotation.y + PI)
-	direction = camera_relative_movement
+	# Only do relative movement rotation if there's movement input
+	if !actor.motion_input.input_direction.is_zero_approx():
+		var new_rot = ((((actor.motion_input.input_direction*Vector2(1,-1))).rotated(PI*1.5).angle())+actor.camera_controller.rotation.y)
+		actor.rotation.y = new_rot
 	
 	if acceleration > 0:
 		actor.velocity = lerp(actor.velocity, direction * current_speed, clamp(acceleration * delta, 0, 1.0))
@@ -182,26 +180,26 @@ func stair_step_down():
 #region State Detectors
 func detect_run() -> void:
 	if actor.run and InputMap.has_action(run_input_action) and Input.is_action_pressed(run_input_action):
-		FSM.change_state_to(Run)
+		FSM.change_state_to(RunThirdPerson)
 
 
 func detect_slide() -> void:
 	if actor.crouch and actor.slide and InputMap.has_action(crouch_input_action) and Input.is_action_pressed(crouch_input_action):
-		FSM.change_state_to(Slide)
+		FSM.change_state_to(SlideThirdPerson)
 	
 
 func detect_crouch() -> void:
 	if actor.crouch and InputMap.has_action(crouch_input_action) and Input.is_action_pressed(crouch_input_action):
-		FSM.change_state_to(Crouch)
+		FSM.change_state_to(CrouchThirdPerson)
 
 
 func detect_crawl() -> void:
 	if actor.crawl and InputMap.has_action(crawl_input_action) and Input.is_action_pressed(crawl_input_action):
-		FSM.change_state_to(Crawl)
+		FSM.change_state_to(CrawlThirdPerson)
 
 
 func detect_jump() -> void:
 	if actor.jump and InputMap.has_action(jump_input_action) and Input.is_action_just_pressed(jump_input_action):
-		FSM.change_state_to(Jump)
+		FSM.change_state_to(JumpThirdPerson)
 #endregion
 #endregion

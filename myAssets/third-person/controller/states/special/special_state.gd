@@ -1,7 +1,6 @@
 class_name SpecialStateThirdPerson extends MachineState
 
 @export var actor: Node3D
-@export var actor_root: ThirdPersonActorBase
 @export_group("Parameters")
 @export var gravity_force: float = 9.8
 @export var speed: float = 3.0
@@ -14,12 +13,12 @@ class_name SpecialStateThirdPerson extends MachineState
 
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if actor.ladder_climb and not FSM.current_state_is_by_class(LadderClimb) \
+	if actor.ladder_climb and not FSM.current_state_is_by_class(LadderClimbThirdPerson) \
 		and actor.ladder_cast_detector.is_colliding():
 		var ladder: Ladder3D = actor.ladder_cast_detector.get_collider(0).get_parent()
 		
 		if ladder.press_to_climb and Input.is_action_just_pressed(ladder.input_action_to_climb_ladder):
-			FSM.change_state_to(LadderClimb)
+			FSM.change_state_to(LadderClimbThirdPerson)
 			
 
 func apply_gravity(force: float = gravity_force, delta: float = get_physics_process_delta_time()):
@@ -28,15 +27,15 @@ func apply_gravity(force: float = gravity_force, delta: float = get_physics_proc
 
 func detect_jump() -> void:
 	if actor.jump and InputMap.has_action(jump_input_action) and Input.is_action_just_pressed(jump_input_action):
-		FSM.change_state_to(Jump)
+		FSM.change_state_to(JumpThirdPerson)
 
 
 func detect_swim() -> void:
 	if FSM.states.has("Swim") and actor.swim:
-		var swim_state: Swim = FSM.states["Swim"] as Swim
+		var swim_state: SwimThirdPerson = FSM.states["SwimThirdPerson"] as SwimThirdPerson
 		
 		if swim_state.eyes.global_position.y <= swim_state.water_height:
-			FSM.change_state_to(Swim)
+			FSM.change_state_to(SwimThirdPerson)
 
 
 func detect_ladder() -> void:
@@ -44,16 +43,16 @@ func detect_ladder() -> void:
 		var ladder: Ladder3D = actor.ladder_cast_detector.get_collider(0).get_parent()
 		
 		if not ladder.press_to_climb:
-			FSM.change_state_to(LadderClimb)
+			FSM.change_state_to(LadderClimbThirdPerson)
 
 
 func detect_ladder_input() -> void:
-	if actor.ladder_climb and not FSM.current_state_is_by_class(LadderClimb) \
+	if actor.ladder_climb and not FSM.current_state_is_by_class(LadderClimbThirdPerson) \
 		and actor.ladder_cast_detector.is_colliding():
 		var ladder: Ladder3D = actor.ladder_cast_detector.get_collider(0).get_parent()
 		
 		if ladder.press_to_climb and Input.is_action_just_pressed(ladder.input_action_to_climb_ladder):
-			FSM.change_state_to(LadderClimb)
+			FSM.change_state_to(LadderClimbThirdPerson)
 
 
 func get_speed() -> float:

@@ -56,7 +56,7 @@ func exit(next_state: MachineState) -> void:
 		tween.tween_property(actor.camera, "rotation:z", original_camera_rotation.z, slide_tilt_comeback_time)\
 			.set_ease(Tween.EASE_OUT)
 	
-	if not next_state is Crouch:
+	if not next_state is CrouchThirdPerson:
 		actor.animation_player.play_backwards(crouch_animation)
 		await actor.animation_player.animation_finished
 
@@ -92,7 +92,7 @@ func on_slider_timeout():
 	detect_crouch()
 	
 	if actor.crouch and actor.ceil_shape_cast.is_colliding():
-		FSM.change_state_to(Crouch)
+		FSM.change_state_to(CrouchThirdPerson)
 	else:
-		FSM.change_state_to(Walk)
+		FSM.change_state_to(WalkThirdPerson)
 	

@@ -12,7 +12,7 @@ var cooldown_timer: Timer
 func handle_input(_event: InputEvent) -> void:
 	if current_ladder and current_ladder.press_to_release and Input.is_action_just_pressed(current_ladder.input_action_to_climb_ladder):
 		current_ladder = null
-		FSM.change_state_to(Fall)
+		FSM.change_state_to(FallThirdPerson)
 
 
 func ready() -> void:
@@ -25,7 +25,7 @@ func enter() -> void:
 	current_ladder = actor.ladder_cast_detector.get_collider(0).get_parent()
 	
 	if current_ladder == null:
-		FSM.change_state_to(Fall)
+		FSM.change_state_to(FallThirdPerson)
 		
 	actor.velocity = Vector3.ZERO
 		
@@ -39,7 +39,7 @@ func exit(_next_state: MachineState) -> void:
 
 func physics_update(delta: float) -> void:
 	if actor.is_on_floor() or current_ladder == null:
-		FSM.change_state_to(Fall)
+		FSM.change_state_to(FallThirdPerson)
 		return
 	
 	var position_relative_to_ladder: Vector3 = current_ladder.global_transform.affine_inverse() * actor.global_position

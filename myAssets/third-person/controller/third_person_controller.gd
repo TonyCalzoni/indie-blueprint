@@ -5,10 +5,11 @@ const GroupName: StringName = &"player"
 
 #region Third Person additional variables, enums, and signals
 @export_group("Third Person Settings")
-@export var actor_root: ThirdPersonActorBase
+
 @export var camera: CameraShake3D
 @export var camera_controller: ThirdPersonCameraController
 @export var fire_arm_weapon_holder: FireArmWeaponHolderThirdPerson
+@export var third_person_actor: Node3D
 #endregion
 
 
@@ -95,7 +96,7 @@ func _ready() -> void:
 	debug_ui.visible = OS.is_debug_build()
 	submerged_effect.visible = is_underwater
 
-	motion_input = TransformedInput.new(actor_root)
+	motion_input = TransformedInput.new(self)
 	InputHelper.capture_mouse()
 	
 	finite_state_machine.register_transitions([
@@ -208,15 +209,15 @@ func _update_wall_checkers() -> void:
 
 func _update_collisions_based_on_state(current_state: MachineState) -> void:
 	match current_state.name:
-		"Idle", "Walk", "Run":
+		"IdleThirdPerson", "WalkThirdPerson", "RunThirdPerson":
 			stand_collision_shape.disabled = false
 			crouch_collision_shape.disabled = true
 			crawl_collision_shape.disabled = true
-		"Crouch", "Slide":
+		"CrouchThirdPerson", "SlideThirdPerson":
 			stand_collision_shape.disabled = true
 			crouch_collision_shape.disabled = false
 			crawl_collision_shape.disabled = true
-		"Crawl":
+		"CrawlThirdPerson":
 			stand_collision_shape.disabled = true
 			crouch_collision_shape.disabled = true
 			crawl_collision_shape.disabled = false

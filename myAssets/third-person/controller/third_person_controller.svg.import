@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dltc2s1e84lw2"
-path="res://.godot/imported/third_person_controller.svg-59382818311d4873e4aaf6f106c01f4d.ctex"
+path="res://.godot/imported/third_person_controller.svg-bb20844f045c2dda4a99bc968452ebd8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://myAssets/third-person/controller/third_person_controller.svg"
-dest_files=["res://.godot/imported/third_person_controller.svg-59382818311d4873e4aaf6f106c01f4d.ctex"]
+source_file="res://My Assets/third-person/controller/third_person_controller.svg"
+dest_files=["res://.godot/imported/third_person_controller.svg-bb20844f045c2dda4a99bc968452ebd8.ctex"]
 
 [params]
 

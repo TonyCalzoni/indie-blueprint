@@ -41,7 +41,7 @@ func enter() -> void:
 	update_wall_parameters()
 	
 	if current_wall_normal.is_zero_approx() or current_wall_direction.is_zero_approx():
-		FSM.change_state_to(Fall)
+		FSM.change_state_to(FallThirdPerson)
 		return
 		
 	if wall_run_time > 0 and is_instance_valid(wall_run_timer):
@@ -55,7 +55,7 @@ func physics_update(delta: float) -> void:
 	update_wall_parameters()
 	
 	if current_wall_normal.is_zero_approx():
-		FSM.change_state_to(Fall)
+		FSM.change_state_to(FallThirdPerson)
 		return
 		
 	apply_gravity(wall_gravity_force, delta)
@@ -135,4 +135,4 @@ func _create_wall_run_timers() -> void:
 		
 func on_wall_run_timer_timeout() -> void:
 	wall_run_cooldown_timer.start(wall_run_cooldown)
-	FSM.change_state_to(Fall)
+	FSM.change_state_to(FallThirdPerson)

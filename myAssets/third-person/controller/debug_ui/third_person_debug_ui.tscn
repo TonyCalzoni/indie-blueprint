@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://1xtba3ukg148"]
 
-[ext_resource type="Script" path="res://myAssets/third-person/controller/debug_ui/third_person_debug_ui.gd" id="1_65y53"]
+[ext_resource type="Script" path="res://My Assets/third-person/controller/debug_ui/third_person_debug_ui.gd" id="1_65y53"]
 
 [node name="DebugUI" type="CanvasLayer"]
 script = ExtResource("1_65y53")

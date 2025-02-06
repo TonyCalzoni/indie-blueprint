@@ -55,7 +55,7 @@ func physics_update(delta: float):
 		actor.velocity *= actor.up_direction * underwater_exit_impulse
 		
 	if actor.global_position.y > water_height or (not is_underwater and actor.is_on_floor()):
-		FSM.change_state_to(Fall)
+		FSM.change_state_to(FallThirdPerson)
 		return
 		
 	detect_ladder()

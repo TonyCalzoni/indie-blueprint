@@ -24,9 +24,9 @@ func physics_update(delta: float):
 	
 	if actor.is_grounded:
 		if actor.motion_input.input_direction.is_zero_approx():
-			FSM.change_state_to(Idle)
+			FSM.change_state_to(IdleThirdPerson)
 		else:
-			FSM.change_state_to(Walk)
+			FSM.change_state_to(WalkThirdPerson)
 			
 	if actor.wall_detected() and current_wall_jump_times < wall_jump_times and InputMap.has_action(jump_input_action) and Input.is_action_just_pressed(jump_input_action):
 		apply_wall_jump()
@@ -38,7 +38,7 @@ func apply_wall_jump() -> void:
 	current_wall_normal = actor.get_current_wall_detected_normal()
 		
 	if current_wall_normal.is_zero_approx():
-		FSM.change_state_to(Fall)
+		FSM.change_state_to(FallThirdPerson)
 		return
 	
 	current_wall_jump_times += 1
