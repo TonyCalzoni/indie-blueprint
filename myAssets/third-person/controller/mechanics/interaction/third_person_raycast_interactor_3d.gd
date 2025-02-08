@@ -45,6 +45,9 @@ func interact(interactable: Interactable3D = current_interactable):
 	if interactable and not interacting:
 		enabled = false
 		interacting = interactable.lock_player_on_interact
+		if interacting and actor.camera_controller.view_mode == actor.camera_controller.perspectives.FIRST_PERSON:
+			# Fixes a bug that occurs when sitting while first person
+			actor.camera_controller.switch_perspective()
 		
 		interactable.interacted.emit(self)
 

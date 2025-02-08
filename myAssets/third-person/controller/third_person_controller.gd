@@ -216,18 +216,22 @@ func _update_collisions_based_on_state(current_state: MachineState) -> void:
 			stand_collision_shape.disabled = false
 			crouch_collision_shape.disabled = true
 			crawl_collision_shape.disabled = true
+			camera_controller.camera_controller_height_offset = 1.75
 		"CrouchThirdPerson", "SlideThirdPerson":
 			stand_collision_shape.disabled = true
 			crouch_collision_shape.disabled = false
 			crawl_collision_shape.disabled = true
+			camera_controller.camera_controller_height_offset = 1.0
 		"CrawlThirdPerson":
 			stand_collision_shape.disabled = true
 			crouch_collision_shape.disabled = true
 			crawl_collision_shape.disabled = false
+			camera_controller.camera_controller_height_offset = 0.3
 		_:
 			stand_collision_shape.disabled = false
 			crouch_collision_shape.disabled = true
 			crawl_collision_shape.disabled = true
+			camera_controller.camera_controller_height_offset = 1.75
 
 #
 func _update_camera_fov(current_state: MachineState, delta: float = get_physics_process_delta_time()) -> void:

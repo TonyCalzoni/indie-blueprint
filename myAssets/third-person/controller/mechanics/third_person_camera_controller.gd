@@ -76,6 +76,8 @@ var original_head_bob_position: Vector3 = Vector3.ZERO
 
 var bob_index: float = 0.0
 var bob_vector: Vector3 = Vector3.ZERO
+
+var camera_controller_height_offset: float = 1.75
 #endregion
 
 #region Core
@@ -114,13 +116,7 @@ func _physics_process(delta: float) -> void:
 	rotate_camera(last_mouse_input)
 	
 	# Make camera follow player
-	var goto
-	if actor.finite_state_machine.current_state is CrouchThirdPerson:
-		goto = actor.position
-	elif actor.finite_state_machine.current_state is CrawlThirdPerson:
-		goto = actor.position
-	else:
-		goto = actor.position
+	var goto = actor.position + Vector3(0, camera_controller_height_offset, 0)
 	position = position + ((goto-position)*delta*5)
 
 #region Third Person functions
@@ -152,38 +148,27 @@ func make_actor_face_camera_direction():
 
 #region modified Camera Controller components
 func rotate_camera(motion: Vector2) -> void:
-	var mouse_sens: float = mouse_sensitivity / 1000 # radians/pixel, 3 becomes 0.003
+	if motion.is_zero_approx():
+		return
 	
+	var mouse_sens: float = mouse_sensitivity / 1000 # radians/pixel, 3 becomes 0.003
 	var twist_input: float = motion.x * mouse_sens ## Giro
 	var pitch_input: float = motion.y * mouse_sens ## Cabeceo
 	
-	if motion.is_zero_approx():
-			return
+	rotate_y(-twist_input)
+	rotate_x(-pitch_input)
+	rotation.z = 0 # Axis lock to prevent unwanted roll
+	
+	rotation_degrees.y = limit_horizontal_rotation(rotation_degrees.y)
+	rotation_degrees.x = limit_vertical_rotation(rotation_degrees.x)
+	
+	orthonormalize()
 	
 	if view_mode == perspectives.FIRST_PERSON:
 		actor.rotate_y(-twist_input)
-		rotate_y(-twist_input)
-		
-		rotate_x(-pitch_input)
-		rotation.z = 0 # Axis lock to prevent unwanted roll
-		
 		actor.rotation_degrees.y = limit_horizontal_rotation(actor.rotation_degrees.y)
-		rotation_degrees.y = limit_horizontal_rotation(rotation_degrees.y)
-		rotation_degrees.x = limit_vertical_rotation(rotation_degrees.x)
-		
 		actor.orthonormalize()
 	
-	elif view_mode == perspectives.THIRD_PERSON:
-		# Don't rotate the actor unlike with first person view
-		rotate_y(-twist_input)
-		head.rotate_x(-pitch_input)
-		rotation.z = 0 # Axis lock to prevent unwanted roll on SpringArm3D
-		
-		head.rotation_degrees.x = limit_vertical_rotation(head.rotation_degrees.x)
-		
-		head.orthonormalize()
-	
-	orthonormalize()
 	last_mouse_input = Vector2.ZERO
 
 #endregion
