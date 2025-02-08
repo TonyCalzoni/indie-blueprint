@@ -2,6 +2,8 @@ class_name AirStateThirdPerson extends MachineState
 
 
 @export var actor: Node3D
+@export var animation_state_machine: AnimationTree
+var asm
 @export_group("Parameters")
 @export var gravity_force: float = 9.8
 @export var air_speed: float = 3.0
@@ -20,7 +22,8 @@ var current_air_speed: float = 0.0
 
 func _ready() -> void:
 	_create_wall_run_start_cooldown_timer()
-	
+	if animation_state_machine:
+		asm = animation_state_machine.get("parameters/playback")
 
 func physics_update(delta: float):
 	apply_gravity(gravity_force, delta)

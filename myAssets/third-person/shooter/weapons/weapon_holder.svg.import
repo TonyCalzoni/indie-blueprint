@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b8w60bef0tve2"
-path="res://.godot/imported/weapon_holder.svg-3154d6e084024b1eed5f13b4ae3582a5.ctex"
+path="res://.godot/imported/weapon_holder.svg-2ee1902f3c591212cbaa1d3570dc02f0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://myAssets/third-person/shooter/weapons/weapon_holder.svg"
-dest_files=["res://.godot/imported/weapon_holder.svg-3154d6e084024b1eed5f13b4ae3582a5.ctex"]
+source_file="res://My Assets/third-person/shooter/weapons/weapon_holder.svg"
+dest_files=["res://.godot/imported/weapon_holder.svg-2ee1902f3c591212cbaa1d3570dc02f0.ctex"]
 
 [params]
 

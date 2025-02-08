@@ -3,13 +3,10 @@ class_name CrouchThirdPerson extends GroundStateThirdPerson
 
 func enter():
 	_crouch_animation()
-	%ThirdPersonAnimationTree.set("parameters/Crouch/blend_amount", 1.0)
 
 
 func exit(next_state: MachineState):
 	_reset_crouch_animation(next_state)
-	%ThirdPersonAnimationTree.set("parameters/Crouch/blend_amount", 0.0)
-	%ThirdPersonAnimationTree.set("parameters/CrouchWalk/blend_amount", 0.0)
 
 
 func physics_update(delta):
@@ -17,9 +14,9 @@ func physics_update(delta):
 	var motion_is_approx_zero: bool = actor.motion_input.input_direction.is_zero_approx()
 	
 	if motion_is_approx_zero:
-		%ThirdPersonAnimationTree.set("parameters/CrouchWalk/blend_amount", 0.0)
+		asm.travel(&"Crouch Idle")
 	else:
-		%ThirdPersonAnimationTree.set("parameters/CrouchWalk/blend_amount", 0.5)
+		asm.travel(&"Crouch Walk Forward")
 	
 	if not Input.is_action_pressed(crouch_input_action) and not actor.ceil_shape_cast.is_colliding():
 		if motion_is_approx_zero:
@@ -43,9 +40,10 @@ func _crouch_animation() -> void:
 	var previous_state = FSM.last_state()
 	
 	if not previous_state is SlideThirdPerson and not previous_state is CrawlThirdPerson:
+		asm.travel(&"Crouch Idle")
 		actor.animation_player.play(crouch_animation)
 		await actor.animation_player.animation_finished
-		
+
 
 
 func _reset_crouch_animation(next_state: MachineState) -> void:

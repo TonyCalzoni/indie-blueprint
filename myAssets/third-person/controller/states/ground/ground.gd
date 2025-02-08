@@ -1,6 +1,8 @@
 class_name GroundStateThirdPerson extends MachineState
 
 @export var actor: Node3D
+@export var animation_state_machine: AnimationTree
+var asm
 @export_group("Parameters")
 @export var gravity_force: float = 9.8
 @export var speed: float = 3.0
@@ -31,6 +33,11 @@ var current_speed: float = 0
 var stair_stepping: bool = false
 
 
+func _ready() -> void:
+	if animation_state_machine:
+		asm = animation_state_machine.get("parameters/playback")
+
+
 func physics_update(delta):
 	if not actor.is_grounded:
 		apply_gravity(gravity_force, delta)
@@ -41,12 +48,13 @@ func physics_update(delta):
 
 func accelerate(delta: float = get_physics_process_delta_time()) -> void:
 	# Relative movement
-	var direction = Vector3(0,0,actor.motion_input.input_direction.length()).rotated(Vector3.UP,actor.rotation.y + PI)
+	var motion_input_direction = actor.motion_input.input_direction
+	var direction = Vector3(0,0,motion_input_direction.length()).rotated(Vector3.UP,actor.rotation.y + PI)
 	current_speed = get_speed()
 	
 	# Only do relative movement rotation if there's movement input
 	if !actor.motion_input.input_direction.is_zero_approx():
-		var new_rot = ((((actor.motion_input.input_direction*Vector2(1,-1))).rotated(PI*1.5).angle())+actor.camera_controller.rotation.y)
+		var new_rot = ((((motion_input_direction*Vector2(1,-1))).rotated(PI*1.5).angle())+actor.camera_controller.rotation.y)
 		actor.rotation.y = new_rot
 	
 	if acceleration > 0:

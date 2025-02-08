@@ -32,12 +32,12 @@ func enter():
 	wall_run_start_cooldown_timer.start()
 	
 	actor.velocity += actor.global_transform.basis.z * edge_gap_auto_jump
-	%ThirdPersonAnimationTree.set("parameters/Air/blend_amount", 1.0)
+	asm.travel(&"JumpAir")
 	actor.move_and_slide()
 
 
 func exit(_next_state):
-	%ThirdPersonAnimationTree.set("parameters/Air/blend_amount", 0.0)
+	pass
 
 
 func physics_update(delta: float):

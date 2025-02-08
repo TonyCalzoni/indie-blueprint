@@ -1,6 +1,10 @@
 class_name IdleThirdPerson extends GroundStateThirdPerson
 
 
+func enter():
+	asm.travel(&"Idle")
+
+
 func physics_update(delta):
 	super.physics_update(delta)
 	

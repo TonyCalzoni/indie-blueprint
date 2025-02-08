@@ -117,11 +117,11 @@ func _physics_process(delta: float) -> void:
 	# Make camera follow player
 	var goto
 	if actor.finite_state_machine.current_state is CrouchThirdPerson:
-		goto = actor.position+Vector3(0,1,0)
+		goto = actor.position
 	elif actor.finite_state_machine.current_state is CrawlThirdPerson:
-		goto = actor.position+Vector3(0,0.3,0)
+		goto = actor.position
 	else:
-		goto = actor.position+Vector3(0,1.75,0)
+		goto = actor.position
 	position = position + ((goto-position)*delta*5)
 
 #region Third Person functions
@@ -138,11 +138,11 @@ func rotate_camera_3p(motion: Vector2) -> void:
 	#actor.rotate_y(-twist_input)
 	
 	rotate_y(-twist_input)
-	rotate_x(-pitch_input)
+	head.rotate_x(-pitch_input)
 	rotation.z = 0 # Axis lock to prevent unwanted roll on SpringArm3D
 	
 	#actor.rotation_degrees.y = limit_horizontal_rotation(actor.rotation_degrees.y)
-	rotation_degrees.x = limit_vertical_rotation(rotation_degrees.x)
+	head.rotation_degrees.x = limit_vertical_rotation(head.rotation_degrees.x)
 
 	#actor.orthonormalize()
 	orthonormalize()

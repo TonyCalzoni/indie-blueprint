@@ -18,19 +18,20 @@ func enter():
 		sprint_timer.start()
 		
 	in_recovery = false
-	#%ThirdPersonAnimationTree.set("parameters/Run/blend_amount", 1.0)
+	asm.travel(&"Run")
 
 
 func physics_update(delta):
 	super.physics_update(delta)
 	
 	if actor.motion_input.input_direction.is_zero_approx():
-		%ThirdPersonAnimationTree.set("parameters/Run/blend_amount", 0.0)
+		asm.travel(&"Idle")
 		if not Input.is_action_pressed(run_input_action):
 			FSM.change_state_to(WalkThirdPerson)
 		
 	else:
-		%ThirdPersonAnimationTree.set("parameters/Run/blend_amount", 1.0)
+		asm.travel(&"Run")
+		pass
 	
 	accelerate(delta)
 	

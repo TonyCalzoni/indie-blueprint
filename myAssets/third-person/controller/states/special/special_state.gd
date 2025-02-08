@@ -1,6 +1,8 @@
 class_name SpecialStateThirdPerson extends MachineState
 
 @export var actor: Node3D
+@export var animation_state_machine: AnimationTree
+var asm
 @export_group("Parameters")
 @export var gravity_force: float = 9.8
 @export var speed: float = 3.0
@@ -10,6 +12,11 @@ class_name SpecialStateThirdPerson extends MachineState
 @export_group("Input actions")
 @export var run_input_action: StringName = InputControls.RunAction
 @export var jump_input_action: StringName = InputControls.JumpAction
+
+
+func _ready() -> void:
+	if animation_state_machine:
+		asm = animation_state_machine.get("parameters/playback")
 
 
 func _unhandled_input(_event: InputEvent) -> void:

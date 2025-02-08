@@ -61,7 +61,7 @@ func ready():
 	
 	
 func enter():
-	%ThirdPersonAnimationTree.set("parameters/Air/blend_amount", 1.0)
+	asm.travel(&"JumpAir")
 	#TODO/TOFIX
 	#%ThirdPersonAnimationTree.set("parameters/JumpStart/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 	apply_jump()
@@ -73,7 +73,7 @@ func exit(_next_state: MachineState):
 	jump_horizontal_boost = 0
 	jump_vertical_boost = 0
 	last_jumped_position = Vector3.ZERO
-	%ThirdPersonAnimationTree.set("parameters/Air/blend_amount", 0.0)
+	#%ThirdPersonAnimationTree.set("parameters/Air/blend_amount", 0.0)
 	
 
 func physics_update(delta: float):

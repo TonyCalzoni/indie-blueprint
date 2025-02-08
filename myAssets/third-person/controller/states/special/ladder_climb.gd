@@ -44,7 +44,11 @@ func physics_update(delta: float) -> void:
 	
 	var position_relative_to_ladder: Vector3 = current_ladder.global_transform.affine_inverse() * actor.global_position
 	var climb_direction: float = actor.motion_input.input_direction_vertical_axis
-
+	
+	# Debug to implement 
+	# asm.travel(&"ClimbUp")
+	# asm.travel(&"ClimbDown")
+	
 	actor.velocity.y = lerp(actor.velocity.y, -climb_direction * speed, delta * acceleration)
 	
 	var actor_height_reference: float = actor.stand_collision_shape.shape.height / 2.0

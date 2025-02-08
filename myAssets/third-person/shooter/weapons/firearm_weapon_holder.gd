@@ -1,6 +1,7 @@
 @icon("res://components/motion/3D/first-person/shooter/weapons/weapon_holder.svg")
 class_name FireArmWeaponHolderThirdPerson extends Node3D
 
+@warning_ignore("unused_signal")
 signal dropped_weapon(weapon: FireArmWeaponMesh)
 signal changed_weapon(from: WeaponDatabase.WeaponRecord, to: WeaponDatabase.WeaponRecord)
 signal stored_weapon(weapon: WeaponDatabase.WeaponRecord)

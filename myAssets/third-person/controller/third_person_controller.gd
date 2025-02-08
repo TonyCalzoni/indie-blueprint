@@ -64,6 +64,9 @@ const GroupName: StringName = &"player"
 @onready var footsteps_manager_3d: FootstepsManager3D = $FootstepsManager3D
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var third_person_animation_player: AnimationPlayer = $ThirdPersonCharacter/AnimationPlayer
+@onready var third_person_animation_tree: AnimationTree = $ThirdPersonCharacter/ThirdPersonAnimationTree
+@onready var asm = third_person_animation_tree.get("parameters/playback")
 @onready var stand_collision_shape: CollisionShape3D = $StandCollisionShape
 @onready var crouch_collision_shape: CollisionShape3D = $CrouchCollisionShape
 @onready var crawl_collision_shape: CollisionShape3D = $CrawlCollisionShape
@@ -241,15 +244,4 @@ func _update_camera_fov(current_state: MachineState, delta: float = get_physics_
 
 func on_state_changed(_from: MachineState, to: MachineState) -> void:
 	_update_collisions_based_on_state(to)
-
-
-#func on_interactable_interacted(interactable: Interactable3D) -> void:
-	#if interactable.lock_player_on_interact:
-		#lock_movement()
-	#
-
-#func on_interactable_canceled_interaction(_interactable: Interactable3D) -> void:
-	#unlock_movement()
-	#camera.make_current()
-	#InputHelper.capture_mouse()
 #endregion
