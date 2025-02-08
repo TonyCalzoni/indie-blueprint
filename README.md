@@ -11,6 +11,5 @@ TODONE: <br>
 --UFO (In progress) - enter/exit, locks player, can fly; TODO: boarding animation/effect <br> 
  <br> 
 TODO: <br> 
--Fix odd camera controller bugs here and there <br> 
---Up/down randomly inverts, pitch angle can desync, InteractorRaycast can desync <br> 
+-Fix odd camera controller bugs here and there: Up/down randomly inverts <br> 
 -Continue testing all States in FSM <br> 
